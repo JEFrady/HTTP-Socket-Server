@@ -10,10 +10,21 @@ const server = net.createServer(client => {
 
   // server.listen(8080, "0.0.0.0"); -> from docs
 
-  // accept username input
-  server.listen(8080, "0.0.0.0", () => {
-    console.log("server connected on port 8080");
+  client.on("data", data => {
+    // let username = data.toString();
+    // console.log(username);
+    // client.write("please enter password");
+    client.on("data", data => {
+      console.log(data.toString());
+    });
   });
+  // push newly connected clients into a DB (from client.js file)
+  // clientDB.push(client);
+});
+
+// accept username input
+server.listen(8080, "0.0.0.0", () => {
+  console.log("server connected on port 8080");
 });
 
 //   client.on("data", data => {
