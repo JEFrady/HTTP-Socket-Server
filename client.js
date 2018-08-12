@@ -1,20 +1,18 @@
 const net = require("net");
+const port = process.argv[3];
+const host = process.argv[2];
 
-const client = new net.Socket();
-client.connect(
-  8080,
-  "0.0.0.0",
-  function() {
-    console.log("Connected");
-    client.write("Client testing");
-  }
-);
+let argv = process.argv;
+// console.log(argv);
 
-client.on("data", function(data) {
-  console.log("Received: " + data);
-  // client.destroy(); // kill client after server's response
-});
 
-client.on("close", function() {
-  console.log("Connection closed");
-});
+const client = net.createConnection(port, host, () => {
+  const date = new Date();
+  console.log('Client has started')
+  client.write(
+    `GET HTTP/1.1\nDate: ${date.toUTCString()}\nHost: ${host}\nConnection: keep-alive\nUser-Agent: Jamie\nAccept: */*`
+  );
+  client.on('data', data => {
+    console.log(data.toString())
+  })
+})
